@@ -11,6 +11,7 @@ const $ = require("jquery");
 const app = express();
 
 app.use(express.static("public"));
+app.use(express.json());
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({
   extended: true
@@ -31,7 +32,9 @@ mongoose.connect("mongodb://localhost:27017/userDB", {
 
 const userSchema = new mongoose.Schema({
   email: String,
-  password: String
+  alias: String,
+  password: String,
+  highestScore: Number
 });
 
 userSchema.plugin(passportLocalMongoose);
@@ -44,7 +47,9 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 app.get("/", function(req, res) {
-  res.render("home");
+  var topThree = User.find().sort('-highestScore').limit(3).exec(function(err, topThree){
+      res.render("home", {topThree: topThree});
+  });
 });
 
 app.get("/login", function(req, res) {
@@ -57,7 +62,10 @@ app.get("/register", function(req, res) {
 
 app.get("/game", function(req, res) {
   if (req.isAuthenticated()) {
-    res.render("game");
+    res.render("game", {
+      highestScore: req.user.highestScore,
+      userId: req.user.id
+    });
   } else {
     res.redirect("/login");
   }
@@ -70,7 +78,9 @@ app.get("/logout", function(req, res) {
 
 app.post("/register", function(req, res) {
   User.register({
-    username: req.body.username
+    username: req.body.username,
+    alias: req.body.alias,
+    highestScore: 0
   }, req.body.password, function(err, user) {
     if (err) {
       console.log(err);
@@ -99,6 +109,18 @@ app.post("/login", function(req, res) {
       });
     }
   });
+});
+
+app.post("/updateScore", function(req, res) {
+    User.updateOne({
+      _id: req.body.id
+    }, {
+      highestScore: req.body.score
+    }, function(err) {
+      if (err) {
+        console.log(err);
+      }
+    });
 });
 
 app.listen(3000, function() {

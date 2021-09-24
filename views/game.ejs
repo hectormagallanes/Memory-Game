@@ -2,6 +2,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
 <h1 id="level-title">Press A Key to Start</h1>
+
 <div class="container">
   <div class="row">
     <div type="button" id="green" class="game-btn green"></div>
@@ -12,6 +13,8 @@
     <div type="button" id="blue" class="game-btn blue"></div>
   </div>
 </div>
+<div id="ID" data-test=<%= userId %>></div>
+<div id="score" data-test=<%= highestScore %>></div>
 
 <script>
   var buttonColours = ["red", "blue", "green", "yellow"];
@@ -21,6 +24,8 @@
 
   var started = false;
   var level = 0;
+  var userId = document.getElementById('ID').dataset.test
+  var highestScore = document.getElementById('score').dataset.test
 
   $(document).keypress(function() {
     if (!started) {
@@ -35,9 +40,7 @@
     var userChosenColour = $(this).attr("id");
     userClickedPattern.push(userChosenColour);
 
-    playSound(userChosenColour);
     animatePress(userChosenColour);
-
     checkAnswer(userClickedPattern.length - 1);
   });
 
@@ -50,7 +53,13 @@
         }, 1000);
       }
     } else {
-      playSound("wrong");
+      if (level > highestScore){
+        $.post("/updateScore", {
+          score: level,
+          id: userId
+        });
+      }
+
       $("body").addClass("game-over");
       $("#level-title").text("Game Over, Press Any Key to Restart");
 
@@ -71,7 +80,6 @@
     gamePattern.push(randomChosenColour);
 
     $("#" + randomChosenColour).fadeIn(100).fadeOut(100).fadeIn(100);
-    playSound(randomChosenColour);
   }
 
   function animatePress(currentColor) {
@@ -81,15 +89,11 @@
     }, 100);
   }
 
-  function playSound(name) {
-    var audio = new Audio("sounds/" + name + ".mp3");
-    audio.play();
-  }
-
   function startOver() {
     level = 0;
     gamePattern = [];
     started = false;
   }
 </script>
+
 <%- include('partials/footer') %>
