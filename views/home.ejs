@@ -1,21 +1,33 @@
 <%- include('partials/header') %>
 
+<div class="flex-home">
+  <header>
+    <h1 class="main-title">Memory Game</h1>
+    <h2 class="title-hook">Follow the pattern and test your memory!</h2>
+    <a class="btn btn-lg main-btn" href="/register" role="button">REGISTER</a>
+    <a class="btn btn-lg main-btn" href="/login" role="button">LOGIN</a>
+  </header>
 
-<div class="jumbotron centered">
-  <div class="container">
-    <i class="fas fa-key fa-6x"></i>
-    <h1 class="display-3">Secrets</h1>
-    <p class="lead">Don't keep your secrets, share them anonymously!</p>
-    <hr>
-    <a class="btn btn-light btn-lg" href="/register" role="button">Register</a>
-    <a class="btn btn-dark btn-lg" href="/login" role="button">Login</a>
-
-    <% topThree.forEach(function(user) { %>
-      <h1><%= user.alias %></h1>
-      <p><%= user.highestScore%>
-    <% }); %>
-
-  </div>
+  <section id="leaderboard">
+    <div class="container">
+      <h2 class="leaderboard-title">Leaderboard</h2>
+      <div class="row">
+        <div class="col">
+          <h2 class="player">Player</h2>
+          <% topThree.forEach(function(user) { %>
+          <h3><%= user.alias %></h3>
+          <% }); %>
+        </div>
+        <div class="col">
+          <h2 class="score">Score</h2>
+          <% topThree.forEach(function(user) { %>
+          <h3><%= user.highestScore %></h3>
+          <% }); %>
+        </div>
+      </div>
+    </div>
+  </section>
 </div>
+
 
 <%- include('partials/footer') %>

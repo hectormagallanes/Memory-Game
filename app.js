@@ -47,8 +47,10 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 app.get("/", function(req, res) {
-  var topThree = User.find().sort('-highestScore').limit(3).exec(function(err, topThree){
-      res.render("home", {topThree: topThree});
+  var topThree = User.find().sort('-highestScore').limit(3).exec(function(err, topThree) {
+    res.render("home", {
+      topThree: topThree
+    });
   });
 });
 
@@ -63,6 +65,7 @@ app.get("/register", function(req, res) {
 app.get("/game", function(req, res) {
   if (req.isAuthenticated()) {
     res.render("game", {
+      alias: req.user.alias,
       highestScore: req.user.highestScore,
       userId: req.user.id
     });
@@ -112,15 +115,15 @@ app.post("/login", function(req, res) {
 });
 
 app.post("/updateScore", function(req, res) {
-    User.updateOne({
-      _id: req.body.id
-    }, {
-      highestScore: req.body.score
-    }, function(err) {
-      if (err) {
-        console.log(err);
-      }
-    });
+  User.updateOne({
+    _id: req.body.id
+  }, {
+    highestScore: req.body.score
+  }, function(err) {
+    if (err) {
+      console.log(err);
+    }
+  });
 });
 
 app.listen(3000, function() {

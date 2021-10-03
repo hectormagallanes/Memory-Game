@@ -1,24 +1,58 @@
+/* GLOBAL */
 body {
   text-align: center;
-  background-color: #011F3F;
+  background-color: #1C0C5B;
+  font-family: 'Gemunu Libre', sans-serif;
 }
 
-#level-title {
-  font-family: 'Press Start 2P', cursive;
-  font-size: 3rem;
-  margin: 5%;
-  color: #FEF2BF;
+.btn {
+  background-color: #44319B;
+  border: 2px solid #4C26E3;
+  color: white;
+  min-width: 10vw;
+  font-size: 1.5rem;
 }
 
-.container {
-  display: block;
+/* GAME */
+.game-nav{
+  background-color: #44319B;
+  border-radius: 0 0 20px 20px;
+}
+.game-nav-row{
+  height: 100px;
+  align-items: center;
+}
+.logout-btn{
   width: 50%;
+  background-color: #E0A100;
+  color: #EBEBEB;
+  border: none;
+}
+#game-title {
+  font-family: 'Press Start 2P', cursive;
+  -webkit-text-stroke: 2px white;
+  font-size: 3rem;
+  margin: 5% 5% 2% 5%;
+  color: #916BBF;
+}
+
+.buttons{
+  width: 50%;
+  height: 500px;
   margin: auto;
 }
 
+.game-row{
+  height: 100%;
+}
+
+.game-col{
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
 .game-btn {
-  margin: 25px;
-  display: inline-block;
   height: 200px;
   width: 200px;
   border: 10px solid black;
@@ -49,4 +83,90 @@ body {
 .pressed {
   box-shadow: 0 0 20px white;
   background-color: grey;
+}
+
+/* HOMEPAGE */
+.flex-home {
+  width: 90%;
+  height: 90vh;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.main-title {
+  font-family: 'Press Start 2P', cursive;
+  -webkit-text-stroke: 2px white;
+  font-size: 5rem;
+  margin: 5% 5% 2% 5%;
+  color: #916BBF;
+}
+
+.title-hook {
+  font-family: 'Press Start 2P', cursive;
+  color: white;
+  margin-bottom: 3%;
+}
+.main-btn{
+  margin-right: 15px;
+}
+.leaderboard-title {
+  font-family: 'Press Start 2P', cursive;
+  -webkit-text-stroke: 1px white;
+  font-size: 2.5rem;
+  color: #916BBF;
+}
+
+#leaderboard {
+  color: white;
+  background-color: #44319B;
+  border-radius: 20px;
+  border: 3px solid #4C26E3;
+  width: 50vw;
+  margin: 50px;
+  padding: 2% 0;
+}
+
+.player, .score {
+  font-size: 3rem;
+}
+
+.player {
+  color: #ffb703;
+}
+
+.score {
+  color: #FFE299;
+}
+
+/* LOGIN / REGISER */
+.flex-form {
+  border-radius: 20px;
+  height: 90vh;
+  margin: 2%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+.card {
+  background: none;
+  color: #FFE299;
+  font-size: 2rem;
+  text-align: left;
+}
+.user-form{
+  border-radius: 20px;
+  background-color: #44319B;
+  padding: 1.2rem;
+}
+
+.form-btn{
+  margin-top: 20px;
+  width: 100%;
+  background-color: #E0A100;
+  color: #EBEBEB;
+  border: 1px solid white;
 }

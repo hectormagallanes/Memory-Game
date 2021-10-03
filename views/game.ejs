@@ -1,18 +1,37 @@
 <%- include('partials/header') %>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
-<h1 id="level-title">Press A Key to Start</h1>
+<div class="container game-nav">
+    <div class="row game-nav-row">
+      <div class="col">
+          <h2 class="player"><%= alias %></h2>
+      </div>
+      <div class="col">
+          <h2 class="score">Higest Score: <%= highestScore %></h2>
+      </div>
+      <div class="col">
+        <a role="button" href="/logout" class="btn logout-btn">
+          <h3>Log Out</h3>
+        </a>
+      </div>
+    </div>
+</div>
 
-<div class="container">
-  <div class="row">
-    <div type="button" id="green" class="game-btn green"></div>
-    <div type="button" id="red" class="game-btn red"></div>
-  </div>
-  <div class="row">
-    <div type="button" id="yellow" class="game-btn yellow"></div>
-    <div type="button" id="blue" class="game-btn blue"></div>
+<h1 id="game-title">Press A Key to Start</h1>
+<div class="buttons">
+  <div class="row game-row">
+    <div class="col game-col">
+      <div type="button" id="green" class="game-btn green"></div>
+      <div type="button" id="red" class="game-btn red"></div>
+    </div>
+    <div class="col game-col">
+      <div type="button" id="yellow" class="game-btn yellow"></div>
+      <div type="button" id="blue" class="game-btn blue"></div>
+    </div>
   </div>
 </div>
+
 <div id="ID" data-test=<%= userId %>></div>
 <div id="score" data-test=<%= highestScore %>></div>
 
@@ -29,23 +48,20 @@
 
   $(document).keypress(function() {
     if (!started) {
-      $("#level-title").text("Level " + level);
+      $("#game-title").text("Level " + level);
       nextSequence();
       started = true;
     }
   });
 
   $(".game-btn").click(function() {
-
     var userChosenColour = $(this).attr("id");
     userClickedPattern.push(userChosenColour);
-
     animatePress(userChosenColour);
     checkAnswer(userClickedPattern.length - 1);
   });
 
   function checkAnswer(currentLevel) {
-
     if (gamePattern[currentLevel] === userClickedPattern[currentLevel]) {
       if (userClickedPattern.length === gamePattern.length) {
         setTimeout(function() {
@@ -53,15 +69,16 @@
         }, 1000);
       }
     } else {
-      if (level > highestScore){
+      if (level > highestScore) {
         $.post("/updateScore", {
-          score: level,
+          score: level - 1,
           id: userId
         });
+        location.reload();
       }
 
       $("body").addClass("game-over");
-      $("#level-title").text("Game Over, Press Any Key to Restart");
+      $("#game-title").text("Game Over, Press Any Key to Restart");
 
       setTimeout(function() {
         $("body").removeClass("game-over");
@@ -74,11 +91,10 @@
   function nextSequence() {
     userClickedPattern = [];
     level++;
-    $("#level-title").text("Level " + level);
+    $("#game-title").text("Level " + level);
     var randomNumber = Math.floor(Math.random() * 4);
     var randomChosenColour = buttonColours[randomNumber];
     gamePattern.push(randomChosenColour);
-
     $("#" + randomChosenColour).fadeIn(100).fadeOut(100).fadeIn(100);
   }
 
